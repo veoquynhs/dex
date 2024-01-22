@@ -1,0 +1,3 @@
+SEPOLIA_RPC_URL = # SEPOLIA_RPC_URL. Get from https://www.alchemy.com/
+PRIVATE_KEY = # PRIVATE KEY (MetaMask, ...)
+ETHERSCAN_API_KEY = # ETHERSCAN_API_KEY. Get from: https://etherscan.io/login
