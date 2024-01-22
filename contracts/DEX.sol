@@ -105,14 +105,19 @@ contract DEX {
         */
 
         // 0.3% fee
-        uint amountInWithFee = (_amountIn * 997) / 1000;
-        amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
+        // amountInWithFee = (_amountIn * 997) / 1000;
+        amountOut =
+            ((reserveOut * (_amountIn * 997)) / 1000) /
+            (reserveIn + (_amountIn * 997) / 1000);
 
         // Transfer token out
         tokenOut.transfer(msg.sender, amountOut * 10 ** uint256(tokenOut.decimals()));
 
         // Update the reserves
-        _update(token0.balanceOf(address(this)), token1.balanceOf(address(this)));
+        _update(
+            token0.balanceOf(address(this)) / (10 ** uint256(token0.decimals())),
+            token1.balanceOf(address(this)) / (10 ** uint256(token1.decimals()))
+        );
     }
 
     function addLiquidity(uint _amount0, uint _amount1) external returns (uint shares) {
@@ -160,7 +165,10 @@ contract DEX {
         _mint(msg.sender, shares);
 
         // Update the reserves
-        _update(token0.balanceOf(address(this)), token1.balanceOf(address(this)));
+        _update(
+            token0.balanceOf(address(this)) / (10 ** uint256(token0.decimals())),
+            token1.balanceOf(address(this)) / (10 ** uint256(token1.decimals()))
+        );
     }
 
     function removeLiquidity(uint _shares) external returns (uint amount0, uint amount1) {
@@ -177,8 +185,8 @@ contract DEX {
         */
 
         // Get balance
-        uint bal0 = token0.balanceOf(address(this));
-        uint bal1 = token1.balanceOf(address(this));
+        uint bal0 = token0.balanceOf(address(this)) / (10 ** uint256(token0.decimals()));
+        uint bal1 = token1.balanceOf(address(this)) / (10 ** uint256(token1.decimals()));
 
         // Calculate amount out
         amount0 = (bal0 * _shares) / totalShares;
@@ -194,7 +202,7 @@ contract DEX {
         _update(bal0 - amount0, bal1 - amount1);
 
         // Transfer the token out
-        token0.transfer(msg.sender, amount0);
-        token1.transfer(msg.sender, amount1);
+        token0.transfer(msg.sender, amount0 * 10 ** token0.decimals());
+        token1.transfer(msg.sender, amount1 * 10 ** token1.decimals());
     }
 }

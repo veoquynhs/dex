@@ -16,8 +16,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     log("----------------------------------------------------")
     const arguments = [
-        "0xcC70502306950b4d83f775706b37086092fd43c8", // Address of token 0
-        "0x886257BB76e40772dD145b0479154840AA04c00A", // Address of token 1
+        "0x49dc6DCA0aeA1D9984988D333909D092D942E7FF", // Address of token 0
+        "0x940962cfcE7F00E0B124B09996Fe67E8AA9cc4e0", // Address of token 1
     ]
     const token = await deploy("DEX", {
         from: deployer,
